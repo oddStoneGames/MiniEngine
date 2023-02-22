@@ -17,6 +17,7 @@ namespace MiniEngine
 	private:
 		bool m_Running = true;
 		std::unique_ptr<MiniWindow> m_Window;
+		float m_StartTime;
 	};
 }
 

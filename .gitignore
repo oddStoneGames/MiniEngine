@@ -1,2 +1,15 @@
 #Directories
 bin/
+.vs/
+CMakeFiles/
+Debug/
+MiniEngine.dir/
+x64/
+
+#Extensions
+**.vcxproj
+**.filters
+**.cmake
+CMakeCache.txt
+**.sln
+**.user
