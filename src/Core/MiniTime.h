@@ -1,5 +1,5 @@
-#ifndef TIME_H
-#define TIME_H
+#ifndef MINITIME_H
+#define MINITIME_H
 
 #include <stdint.h>
 #include <iomanip>
@@ -7,20 +7,27 @@
 
 namespace MiniEngine
 {
-	class Time
+	class MiniTime
 	{
 	public:
-		Time() = delete;
-		Time(const Time&) = delete;
-		Time& operator=(const Time&) = delete;
+		MiniTime() = delete;
+		MiniTime(const MiniTime&) = delete;
+		MiniTime& operator=(const MiniTime&) = delete;
 
+		/// @brief Ranges from 0.0f to positive infinity.
 		static float timeScale;
 
+		/// @brief The MiniTime it took to render this frame(in milliseconds).
 		static inline float deltaTime() { return _deltaTime; }
+		/// @brief The MiniTime it took to render this frame unscaled by the timeScale(in milliseconds).
 		static inline float unscaledDeltaTime() { return _unscaledDeltaTime; }
+		/// @brief The Real MiniTime since the Engine Started(in seconds).
 		static inline float realTimeSinceStartup() { return _realTimeSinceStartup; }
+		/// @brief The MiniTime since the Engine Started scaled by timeScale(in seconds).
 		static inline float time() { return _time; }
+		/// @brief The Amount of Frames since Rendering started.
 		static inline uint32_t frameCount() { return _frameCount; }
+		/// @brief Returns the Local MiniTime Format as a std::string
 		static inline std::string GetLocalTimeFormat()
 		{
 			auto t = std::time(0);
@@ -31,7 +38,7 @@ namespace MiniEngine
 			return os.str();
 		}
 
-		friend class Engine;
+		friend class Game;
 	private:
 		static float _deltaTime;
 		static float _unscaledDeltaTime;
@@ -39,13 +46,6 @@ namespace MiniEngine
 		static float _time;
 		static uint32_t _frameCount;
 	};
-
-	float Time::_deltaTime = 0.0f;
-	float Time::_unscaledDeltaTime = 0.0f;
-	float Time::_time = 0.0f;
-	float Time::timeScale = 1.0f;
-	float Time::_realTimeSinceStartup = 0.0f;
-	uint32_t Time::_frameCount = 0;
 }
 
-#endif // !TIME_H
+#endif // !MINITIME_H
