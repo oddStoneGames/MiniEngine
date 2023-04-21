@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.6)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -19,7 +19,8 @@ else()
     list(APPEND LIBS X11)
 endif()
 
-list(APPEND SOURCE_FILES src/Core/Game.cpp src/Core/Game.h src/Core/EntryPoint.h src/Core/MiniWindow.h src/Core/MiniTime.h src/Core/MiniTime.cpp)
+list(APPEND SOURCE_FILES src/Core/Game.cpp src/Core/Game.h src/Core/EntryPoint.h src/Core/MiniWindow.h src/Core/MiniTime.h src/Core/MiniTime.cpp
+                         src/Core/Log/MiniLogger.cpp src/Core/Log/MiniLogger.h src/Core/Log/Log.cpp src/Core/Log/Log.h)
 
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
 target_compile_definitions(${PROJECT_NAME} PUBLIC ${COMPILE_DEFS} PUBLIC PROJECT_DIR="${PROJECT_SOURCE_DIR}")

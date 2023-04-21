@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "MiniTime.h"
+#include "Log/Log.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -22,6 +23,7 @@ namespace MiniEngine
 	bool Game::Init()
 	{
 		std::cout << "Initialized Game!\n";
+		Log::Init();
 		m_StartTime = std::chrono::time_point_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()).time_since_epoch().count() / 1000000.0f;
 		return true;
 	}
@@ -47,9 +49,14 @@ namespace MiniEngine
 			MiniTime::_time = MiniTime::_realTimeSinceStartup * MiniTime::timeScale;
 			MiniTime::_frameCount++;
 
-			printf("MiniTime Format: %s\tDelta MiniTime: %f\tUnscaled Delta MiniTime: %f\tTime Scale: %f\tTime: %f\tReal MiniTime Since Startup: %f\tFrame Count: %d\n",
+			DEBUG_ENGINE_DEBUG("Hiiii this should be green!");
+			DEBUG_ENGINE_ERROR("Hiiii this should be green!");
+
+			DEBUG_WARN("Hiiii this should be green!");
+
+			/*printf("MiniTime Format: %s\tDelta MiniTime: %f\tUnscaled Delta MiniTime: %f\tTime Scale: %f\tTime: %f\tReal MiniTime Since Startup: %f\tFrame Count: %d\n",
 				MiniTime::GetLocalTimeFormat().c_str(), MiniTime::deltaTime(), MiniTime::unscaledDeltaTime(), MiniTime::timeScale, MiniTime::time(), MiniTime::realTimeSinceStartup(), 
-				MiniTime::frameCount());
+				MiniTime::frameCount());*/
 		}
 	}
 
