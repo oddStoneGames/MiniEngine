@@ -67,7 +67,7 @@ namespace MiniEngine
 			mu.button = 1;
 			MouseMovedEvent me;
 			me.x = 400;
-			me.x = 300;
+			me.y = 300;
 
 			SEND_MOUSE_EVENT(md);
 			SEND_MOUSE_EVENT(mu);
