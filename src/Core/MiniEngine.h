@@ -5,5 +5,7 @@
 
 #include "Game.h"
 #include "MiniTime.h"
+#include "Log/Log.h"
+#include "Events/EventHandler.h"
 
 #endif // !MINIENGINE_H

@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <chrono>
 
+#include "Events/EventHandler.h"
+
 namespace MiniEngine
 {
 	Game::Game()
@@ -49,14 +51,40 @@ namespace MiniEngine
 			MiniTime::_time = MiniTime::_realTimeSinceStartup * MiniTime::timeScale;
 			MiniTime::_frameCount++;
 
-			DEBUG_ENGINE_DEBUG("Hiiii this should be green!");
-			DEBUG_ENGINE_ERROR("Hiiii this should be green!");
+			// Window Events Test
+			WindowResizeEvent re;
+			re.width = 800;
+			re.height = 600;
+			WindowCloseEvent ce;
 
-			DEBUG_WARN("Hiiii this should be green!");
+			SEND_WINDOW_EVENT(re);
+			SEND_WINDOW_EVENT(ce);
 
-			/*printf("MiniTime Format: %s\tDelta MiniTime: %f\tUnscaled Delta MiniTime: %f\tTime Scale: %f\tTime: %f\tReal MiniTime Since Startup: %f\tFrame Count: %d\n",
-				MiniTime::GetLocalTimeFormat().c_str(), MiniTime::deltaTime(), MiniTime::unscaledDeltaTime(), MiniTime::timeScale, MiniTime::time(), MiniTime::realTimeSinceStartup(), 
-				MiniTime::frameCount());*/
+			// Mouse Events Test
+			MouseButtonDownEvent md;
+			md.button = 0;
+			MouseButtonUpEvent mu;
+			mu.button = 1;
+			MouseMovedEvent me;
+			me.x = 400;
+			me.x = 300;
+
+			SEND_MOUSE_EVENT(md);
+			SEND_MOUSE_EVENT(mu);
+			SEND_MOUSE_EVENT(me);
+
+			// Key Events Test
+			KeyDownEvent kd;
+			kd.keycode = 2;
+			KeyDownEvent ku;
+			ku.keycode = 3;
+
+			SEND_KEY_EVENT(kd);
+			SEND_KEY_EVENT(ku);
+
+			DEBUG_ENGINE_TRACE("Time Format: %s\n\t\t\t   Delta Time: %f\n\t\t\t   Unscaled Delta Time: %f\n\t\t\t   Time Scale: %f\n\t\t\t   Time: %f\n\t\t\t   Real Time Since Startup: %f\n\t\t\t   Frame Count: %d",
+				MiniTime::GetLocalTimeFormat().c_str(), MiniTime::deltaTime(), MiniTime::unscaledDeltaTime(), MiniTime::timeScale, MiniTime::time(), MiniTime::realTimeSinceStartup(),
+				MiniTime::frameCount());
 		}
 	}
 

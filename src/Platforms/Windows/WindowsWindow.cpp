@@ -1,5 +1,6 @@
 #include "WindowsWindow.h"
 #include <iostream>
+#include "../../Core/Log/Log.h"
 
 namespace MiniEngine
 {
@@ -15,7 +16,7 @@ namespace MiniEngine
 
 	void WindowsWindow::OnUpdate()
 	{
-		std::cout << "Window OnUpdate()\n";
+		DEBUG_ENGINE_TRACE("Window OnUpdate()");
 	}
 
 	void WindowsWindow::OnDraw()
@@ -27,6 +28,7 @@ namespace MiniEngine
 	{
 
 	}
+
 	bool WindowsWindow::Init(const WindowProperties& windowProps)
 	{
 		m_Data.Title = windowProps.Title;

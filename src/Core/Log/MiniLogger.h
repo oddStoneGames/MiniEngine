@@ -2,11 +2,6 @@
 #ifndef MINILOGGER_H
 #define MINILOGGER_H
 
-// if MSVC compiler is used, define _CRT_SECURE_NO_WARNINGS
-#if defined(_MSC_VER)
-#define _CRT_SECURE_NO_WARNINGS
-#endif
-
 #include <cstdio>
 #include <ctime>
 #include <mutex>
