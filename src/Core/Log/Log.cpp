@@ -9,10 +9,8 @@ namespace MiniEngine
 	{
 		s_EngineLogger->SetInitialString("Engine: ");
 		s_EngineLogger->SetPriority(MiniLogger::TracePriority);
-		s_EngineLogger->OutputToFile("enginelog.txt");
 
 		s_GameLogger->SetInitialString("Game: ");
 		s_GameLogger->SetPriority(MiniLogger::TracePriority);
-		s_GameLogger->OutputToFile("gamelog.txt");
 	}
 }

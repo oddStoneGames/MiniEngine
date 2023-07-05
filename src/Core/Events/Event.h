@@ -38,6 +38,7 @@ namespace MiniEngine
     @brief Dispatches events to listener.
     SendEvent(): Submit a given event to all the listeners.
     AddListener(): Become a listener of an Event.
+    RemoveListener(): Stops listening to an event.
     */
     template<typename T>
     class EventDispatcher
@@ -45,13 +46,32 @@ namespace MiniEngine
     private:
         using Func = std::function<void(const Event<T>&)>;
         std::map<T, std::vector<Func>> m_Listeners;
+        int m_NextListenerID = 0;
+        std::map<int, std::pair<T, typename std::vector<Func>::iterator>> m_ListenerHandles;
     public:
         /// @brief Add an Listener to the type of event.
         /// @param type Event Type
         /// @param func Listener Function
-        void AddListener(T type, const Func& func)
+        /// @return A handle/ID for the added listener
+        int AddListener(T type, const Func& func)
         {
             m_Listeners[type].push_back(func);
+            int handle = m_NextListenerID++;
+            m_ListenerHandles[handle] = { type, std::prev(m_Listeners[type].end()) };
+            return handle;
+        }
+
+        /// @brief Removes a listener based on its handle/ID.
+        /// @param handle The handle/ID of the listener to remove
+        void RemoveListener(int handle)
+        {
+            auto it = m_ListenerHandles.find(handle);
+            if (it != m_ListenerHandles.end()) {
+                const auto& listenerInfo = it->second;
+                auto& listeners = m_Listeners[listenerInfo.first];
+                listeners.erase(listenerInfo.second);
+                m_ListenerHandles.erase(it);
+            }
         }
 
 #ifdef MINIENGINE_BUILD // To make sure Send Event is only accessible in the Mini Engine Project.

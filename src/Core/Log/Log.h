@@ -18,29 +18,36 @@ namespace MiniEngine
 		static std::shared_ptr<MiniLogger> s_GameLogger;
 	};
 
-	#define DEBUG_ENGINE_TRACE(...)	Log::GetEngineLogger()->Trace(__VA_ARGS__)
+#ifdef MINIENGINE_BUILD
+#ifndef NDEBUG
+#define LogEngineTrace(...)		Log::GetEngineLogger()->Trace(__VA_ARGS__)
+#define LogEngineDebug(...)		Log::GetEngineLogger()->Debug(__VA_ARGS__)
+#define LogEngineInfo(...)		Log::GetEngineLogger()->Info(__VA_ARGS__)
+#define LogEngineWarning(...)	Log::GetEngineLogger()->Warn(__VA_ARGS__)
+#define LogEngineError(...)		Log::GetEngineLogger()->Error(__VA_ARGS__)
+#else
+#define LogEngineTrace(...)
+#define LogEngineDebug(...)
+#define LogEngineInfo(...)
+#define LogEngineWarning(...)
+#define LogEngineError(...)
+#endif
+#else
+#ifndef NDEBUG
+#define LogTrace(...)	Log::GetGameLogger()->Trace(__VA_ARGS__)
+#define LogDebug(...)	Log::GetGameLogger()->Debug(__VA_ARGS__)
+#define LogInfo(...)	Log::GetGameLogger()->Info(__VA_ARGS__)
+#define LogWarning(...)	Log::GetGameLogger()->Warn(__VA_ARGS__)
+#define LogError(...)	Log::GetGameLogger()->Error(__VA_ARGS__)
+#else
+#define LogTrace(...)
+#define LogDebug(...)
+#define LogInfo(...)
+#define LogWarning(...)
+#define LogError(...)
+#endif
+#endif
 
-	#ifndef NDEBUG
-	#define DEBUG_ENGINE_DEBUG(...)	Log::GetEngineLogger()->Debug(__VA_ARGS__)
-	#else
-	#define DEBUG_ENGINE_DEBUG(...)	
-	#endif
-
-	#define DEBUG_ENGINE_INFO(...)	Log::GetEngineLogger()->Info(__VA_ARGS__)
-	#define DEBUG_ENGINE_WARN(...)	Log::GetEngineLogger()->Warn(__VA_ARGS__)
-	#define DEBUG_ENGINE_ERROR(...)	Log::GetEngineLogger()->Error(__VA_ARGS__)
-
-	#define DEBUG_TRACE(...) Log::GetGameLogger()->Trace(__VA_ARGS__)
-
-	#ifndef NDEBUG
-	#define DEBUG_DEBUG(...) Log::GetGameLogger()->Debug(__VA_ARGS__)
-	#else
-	#define DEBUG_DEBUG(...) 
-	#endif
-
-	#define DEBUG_INFO(...)	 Log::GetGameLogger()->Info(__VA_ARGS__)
-	#define DEBUG_WARN(...)	 Log::GetGameLogger()->Warn(__VA_ARGS__)
-	#define DEBUG_ERROR(...) Log::GetGameLogger()->Error(__VA_ARGS__)
 }
 
 #endif // !LOG_H

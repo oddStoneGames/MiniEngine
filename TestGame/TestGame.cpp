@@ -8,15 +8,15 @@ class TestGame : public Game
 public:
 	TestGame()
 	{
-		ADD_WINDOW_EVENT_LISTENER(WindowEvents::WindowResize, TestGame::OnWindowEvent, this);
-		ADD_WINDOW_EVENT_LISTENER(WindowEvents::WindowClose, TestGame::OnWindowEvent, this);
+		AddWindowEventListener(WindowEvents::WindowResize, TestGame::OnWindowEvent, this);
+		AddWindowEventListener(WindowEvents::WindowClose, TestGame::OnWindowEvent, this);
 
-		ADD_MOUSE_EVENT_LISTENER(MouseEvents::MouseMoved, TestGame::OnMouseEvent, this);
-		ADD_MOUSE_EVENT_LISTENER(MouseEvents::MouseButtonDown, TestGame::OnMouseEvent, this);
-		ADD_MOUSE_EVENT_LISTENER(MouseEvents::MouseButtonUp, TestGame::OnMouseEvent, this);
+		m_MouseMovedEventHandle = AddMouseEventListener(MouseEvents::MouseMoved, TestGame::OnMouseEvent, this);
+		AddMouseEventListener(MouseEvents::MouseButtonDown, TestGame::OnMouseEvent, this);
+		AddMouseEventListener(MouseEvents::MouseButtonUp, TestGame::OnMouseEvent, this);
 
-		ADD_KEY_EVENT_LISTENER(KeyEvents::KeyDown, TestGame::OnKeyEvent, this);
-		ADD_KEY_EVENT_LISTENER(KeyEvents::KeyUp, TestGame::OnKeyEvent, this);
+		AddKeyEventListener(KeyEvents::KeyDown, TestGame::OnKeyEvent, this);
+		AddKeyEventListener(KeyEvents::KeyUp, TestGame::OnKeyEvent, this);
 	}
 	~TestGame() {}
 
@@ -24,12 +24,12 @@ public:
 	{
 		if (e.GetType() == WindowEvents::WindowClose)
 		{
-			DEBUG_INFO("Window Close Event!");
+			LogInfo("Window Close Event!");
 		}
 		else if (e.GetType() == WindowEvents::WindowResize)
 		{
 			auto windowResizeEvent = e.ToType<WindowResizeEvent>();
-			DEBUG_INFO("Window Resize Event! New Dimensions: %d x %d", windowResizeEvent.width, windowResizeEvent.height);
+			LogInfo("Window Resize Event! New Dimensions: %d x %d", windowResizeEvent.width, windowResizeEvent.height);
 		}
 	}
 
@@ -38,17 +38,17 @@ public:
 		if (e.GetType() == MouseEvents::MouseMoved)
 		{
 			auto mouseMovedEvent = e.ToType<MouseMovedEvent>();
-			DEBUG_INFO("Mouse Moved Event! Mouse Position: (%d, %d)", mouseMovedEvent.x, mouseMovedEvent.y);
+			LogInfo("Mouse Moved Event! Mouse Position: (%d, %d)", mouseMovedEvent.x, mouseMovedEvent.y);
 		}
 		else if (e.GetType() == MouseEvents::MouseButtonDown)
 		{
 			auto mouseButtonDownEvent = e.ToType<MouseButtonDownEvent>();
-			DEBUG_INFO("Mouse Button Down Event! Mouse Button Down: %d", mouseButtonDownEvent.button);
+			LogInfo("Mouse Button Down Event! Mouse Button Down: %d", mouseButtonDownEvent.button);
 		}
 		else if (e.GetType() == MouseEvents::MouseButtonUp)
 		{
 			auto mouseButtonUpEvent = e.ToType<MouseButtonUpEvent>();
-			DEBUG_INFO("Mouse Button Up Event! Mouse Button Up: %d", mouseButtonUpEvent.button);
+			LogInfo("Mouse Button Up Event! Mouse Button Up: %d", mouseButtonUpEvent.button);
 		}
 	}
 
@@ -57,14 +57,23 @@ public:
 		if (e.GetType() == KeyEvents::KeyDown)
 		{
 			auto keyDownEvent = e.ToType<KeyDownEvent>();
-			DEBUG_INFO("Key Down Event! Keycode: %d", keyDownEvent.keycode);
+			LogInfo("Key Down Event! Keycode: %d", keyDownEvent.keycode);
+
+			if (keyDownEvent.keycode == 32)
+			{
+				// Space Pressed!
+				RemoveMouseEventListener(m_MouseMovedEventHandle);
+			}
 		}
 		else if (e.GetType() == KeyEvents::KeyUp)
 		{
 			auto keyUpEvent = e.ToType<KeyUpEvent>();
-			DEBUG_INFO("Key Up Event! Keycode: %d", keyUpEvent.keycode);
+			LogInfo("Key Up Event! Keycode: %d", keyUpEvent.keycode);
 		}
 	}
+
+private:
+	int m_MouseMovedEventHandle = 0;
 };
 
 MiniEngine::Game* MiniEngine::CreateGame()
