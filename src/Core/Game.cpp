@@ -12,7 +12,7 @@ namespace MiniEngine
 {
 	Game::Game()
 	{
-		m_Window = WindowsWindow::Create();
+		m_Window = MiniWindow::Create();
 		m_StartTime = 0.0f;
 	}
 
@@ -27,6 +27,8 @@ namespace MiniEngine
 		Log::Init();
 		LogEngineInfo("Initialized Game!");
 		m_StartTime = std::chrono::time_point_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()).time_since_epoch().count() / 1000000.0f;
+		// Subscribe to Window Close Event.
+		AddWindowEventListener(WindowEvents::WindowClose, Game::OnWindowEvent, this);
 		return true;
 	}
 
@@ -60,5 +62,17 @@ namespace MiniEngine
 	void Game::Cleanup()
 	{
 		LogEngineInfo("Cleaning Up!");
+
+		// Close the window.
+		m_Window->OnClose();
 	}
+
+    void Game::OnWindowEvent(const Event<WindowEvents> &e)
+    {
+		if (e.GetType() == WindowEvents::WindowClose)
+		{
+			// Tell the game to stop executing.
+			m_Running = false;
+		}
+    }
 }

@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <ctime>
 #include <mutex>
+#include <stdarg.h>
 
 namespace MiniEngine
 {
@@ -117,8 +118,7 @@ namespace MiniEngine
 
         void SetColor(Priority messagePriority);
 
-        template<typename... Args>
-        void Log(Priority messagePriority, const char* message, Args&& ... args)
+        void Log(Priority messagePriority, const char* message, ...)
         {
             if (m_Priority <= messagePriority)
             {
@@ -132,9 +132,12 @@ namespace MiniEngine
                 std::printf("%s ", m_TimeBuffer);
 
                 const char* messagePriorityString = MessagePriorityToString(messagePriority);
-                std::printf(messagePriorityString);
-                std::printf(m_InitialString);
-                std::printf(message, args...);
+                std::printf(messagePriorityString, "%s");
+                std::printf(m_InitialString, "%s");
+                va_list arglist;
+                va_start(arglist, message);
+                std::vprintf(message, arglist);
+                va_end(arglist);
                 std::printf("\n");
 
                 std::printf("%s", NormalColorCode);
@@ -142,9 +145,11 @@ namespace MiniEngine
                 if (m_File)
                 {
                     std::fprintf(m_File, "%s ", m_TimeBuffer);
-                    std::fprintf(m_File, messagePriorityString);
-                    std::fprintf(m_File, m_InitialString);
-                    std::fprintf(m_File, message, args...);
+                    std::fprintf(m_File, "%s", messagePriorityString);
+                    std::fprintf(m_File, "%s", m_InitialString);
+                    va_start(arglist, message);
+                    std::vfprintf(m_File, message, arglist);
+                    va_end(arglist);
                     std::fprintf(m_File, "\n");
                 }
             }
